@@ -1,13 +1,13 @@
 {
   "manifest_version": 2,
-  "name": "Simple Adblock",
+  "name": "AshBlocker",
   "description": "A simple Adblock for browsers",
   "version": "1.0.0",
   "permissions": ["webRequest", "webRequestBlocking", "<all_urls>"],
   "icons": {
-    "16": "icons/adblock16.png",
-    "48": "icons/adblock48.png",
-    "128": "icons/adblock128.png"
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
   },
   "browser_action": {
     "default_popup": "popup.html"
