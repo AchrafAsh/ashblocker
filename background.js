@@ -1,7 +1,6 @@
-const adUrlListHost =
-  "https://raw.githubusercontent.com/EnergizedProtection/block/master/spark/formats/domains.txt";
-const patternListHost =
-  "https://raw.githubusercontent.com/easylist/easylist/master/easylist/easylist_general_block.txt";
+const adUrlListHost = "https://raw.githubusercontent.com/EnergizedProtection/block/master/spark/formats/domains.txt";
+const patternListHost = "https://raw.githubusercontent.com/easylist/easylist/master/easylist/easylist_general_block.txt";
+
 let isAdBlockingActive = true;
 let urlsToBlock = [];
 let adBlockRequestCount = 0;
@@ -12,14 +11,20 @@ const fetchUrlsToBlockAndBlock = async () => {
   const adUrlList = hostText
     .split("\n")
     .filter(url => !url.startsWith("#"))
-    .map(url => `*://${url}/*`);
+    .map(url => {
+      url = url.replace(/\s+/g, '');
+      return `*://${url}/*`
+    });
 
   const patternHost = await fetch(patternListHost);
   const patternHostText = await patternHost.text();
   const patternList = patternHostText
     .split("\n")
     .filter(pattern => !pattern.startsWith("! ") && pattern !== "")
-    .map(pattern => `*://*/*${pattern}*`);
+    .map(pattern => {
+      pattern = pattern.replace(/\s+/g, '');
+      return `*://*/*${pattern}*`
+    });
 
   urlsToBlock = urlsToBlock.concat(adUrlList, patternList);
   enableAdBlocking();
@@ -28,6 +33,7 @@ const fetchUrlsToBlockAndBlock = async () => {
 fetchUrlsToBlockAndBlock();
 
 const adBlockRequest = details => {
+  console.log(details)
   adBlockRequestCount++;
   chrome.browserAction.setBadgeText({
     text: adBlockRequestCount.toString()
